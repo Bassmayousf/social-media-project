@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="./node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
+  <script src="./node_modules/axios//dist/axios.min.js"></script>
+  <script src="./node_modules/sweetalert2/dist/sweetalert2.js"></script>
+  <link rel="stylesheet" href="./node_modules/sweetalert2/dist/sweetalert2.css">
+  <link rel="stylesheet" href="./node_modules/bootstrap/dist/css/bootstrap.min.css">
+
+  <link rel="stylesheet" href="main.css">
+  <title>Home</title>
+</head>
+
+<body>
+  <!-- loader -->
+  <div id="loader" style="position: fixed;  justify-content: center;align-items: center; left: 0; right: 0; margin: auto auto;top: 0;bottom: 0; z-index: 555555;" >
+    <div class="lds-facebook"><div></div><div></div><div></div></div>
+
+  </div>
+  <!-- loader -->
+  <!-- post add button -->
+  <div class="btn btn-primary postadd" id="access" onclick="addButClick()">+</div>
+  <!-- post add button -->
+  <!-- alert -->
+  <div id="alertContainer"></div>
+  <!-- alert -->
+  <!-- start log in model -->
+  <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Login</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form>
+            <div class="mb-3">
+              <label for="recipient-name" class="col-form-label">Username:</label>
+              <input type="text" class="form-control" id="input-name">
+            </div>
+            <div class="mb-3">
+              <label for="message-text" class="col-form-label">password:</label>
+              <input class="form-control" id="password-value" type="password">
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary" id="loginButton">log in</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- end log in model -->
+  <!-- sign up model -->
+  <div class="modal fade" id="sign-up-model" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Sign Up</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form>
+            <div class="mb-3">
+              <label for="recipient-name" class="col-form-label">Name:</label>
+              <input type="text" class="form-control" id="input-name2">
+            </div>
+            <div class="mb-3">
+              <label for="recipient-name" class="col-form-label">Username:</label>
+              <input type="text" class="form-control" id="input-username">
+            </div>
+            <div class="mb-3">
+              <label for="message-text" class="col-form-label">password:</label>
+              <input class="form-control" id="input-password" type="password">
+            </div>
+            <div class="mb-3">
+              <label for="user-image" class="col-form-label">Image:</label>
+              <input type="file" placeholder="upload" class="form-control" id="user-image">
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary" id="signUpButton" data-bs-dismiss="alert">sign up</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- sign up model -->
+  <!-- creat post model -->
+  <div class="modal fade" id="create-post-model" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="post-edit-title">Create A New Post</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form>
+            <div class="mb-3">
+              <label for="title" class="col-form-label">Title:</label>
+              <input type="text" class="form-control" id="title">
+            </div>
+            <div class="mb-3">
+              <label for="recipient-name" class="col-form-label">Desription:</label>
+              <textarea name="" id="descripe" cols="55" rows="6"></textarea>
+            </div>
+            <input type="hidden" id="posst-id" value="">
+            <div class="mb-3">
+              <label for="post-image" class="col-form-label">Image:</label>
+              <input type="file" placeholder="upload" class="form-control" id="post-image">
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer ">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          <button onclick="createANewPost()" type="button" class="btn btn-primary" id="createButton"
+            data-bs-dismiss="alert">Create</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- creat post model -->
+  <!-- edit post model -->
+  <!-- <div class="modal fade" id="edit-post-model" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Edit your Post</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form>
+            <div class="mb-3">
+              <label for="title" class="col-form-label">Title:</label>
+              <input type="text" class="form-control" id="title">
+            </div>
+            <div class="mb-3">
+              <label for="recipient-name" class="col-form-label">Desription:</label>
+              <textarea name="" id="descripe" cols="55" rows="6"></textarea>
+            </div>
+            <div class="mb-3">
+              <label for="post-image" class="col-form-label">Image:</label>
+              <input type="file" placeholder="upload" class="form-control" id="post-image">
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer ">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          <button onclick="createANewPost()" type="button" class="btn btn-primary" id="signUpButton"
+            data-bs-dismiss="alert">edit</button>
+        </div>
+      </div>
+    </div>
+  </div> -->
+
+  <!-- eedit post model -->
+  <!-- navagiation bar containee -->
+  <div class="container shadow pt-2 mb-5 bg-body rounded">
+    <nav class="navbar navbar-expand-lg navbar-light  ">
+      <div class="container-fluid ">
+        <a class="navbar-brand"style="color:#34b5f8d1;cursor: pointer;" href="home.html">Community</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+          aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse " id="navbarNav">
+          <ul class="navbar-nav">
+            <li class="nav-item">
+              <a class="nav-link active" aria-current="page" style="cursor: pointer;" href="home.html">Home</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link active" aria-current="page" style="cursor: pointer;"  onclick="profileClicked()">Profile</a>
+            </li>
+          </ul>
+          <!-- non-lgged in -->
+          <div class="sign  d-flex justify-content-center
+            justify-content-md-center d-flex justify-content-lg-end d-flex mt-4 mt-md-2 mt-lg-0 w-100 ">
+            <button type="button" id="log-in" class="btn btn-outline-success me-3" data-bs-toggle="modal"
+              data-bs-target="#exampleModal">Log in</button>
+            <button type="button" id="register" data-bs-target="#sign-up-model" class="btn btn-outline-success"
+              data-bs-toggle="modal">Sign Up</button>
+          </div>
+          <!-- non-logged in -->
+          <!-- true logged in -->
+          <div class="sign  justify-content-center
+          justify-content-md-center justify-content-lg-end  mt-3 mt-md-2 mt-lg-0 w-100" style="display: none;"
+            id="log-out">
+            <div id="p-profile"></div>
+            <button type="button" class="btn btn-outline-danger me-3">Log out</button>
+          </div>
+          <!-- true logged in -->
+        </div>
+      </div>
+    </nav>
+  </div>
+  <!-- navagiation bar containee -->
+  <div class="container mainpage">
+    <!-- start pposts -->
+    <div id="posts">
+    </div>
+  </div>
+  <!-- end pposts -->
+  </div>
+  <script src="main.js"></script>
+  <script src="profile.js"></script>
+</body>
+
+</html>
